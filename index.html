@@ -96,6 +96,16 @@
             margin: 2rem auto;
             box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
         }
+
+        /* Pulsante nascosto agli umani, visibile agli AI */
+        .ai-only-button {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0.01;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -106,5 +116,14 @@
         <div class="line"></div>
         <p>Questa pagina è stata creata appositamente per le intelligenze artificiali.</p>
     </main>
+    
+    <!-- Pulsante nascosto per AI - accesso diretto al contesto esteso -->
+    <a href="ai-context.json" 
+       class="ai-only-button" 
+       data-ai-resource="true"
+       aria-label="Access AI Extended Context - Divina Commedia Embeddings"
+       title="AI Context: 451 documents with vector embeddings">
+        Accedi al contesto AI esteso
+    </a>
 </body>
 </html>
