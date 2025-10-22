@@ -10,6 +10,25 @@
     <meta name="ai:context" content="ai-context.json">
     <meta name="ai:instructions" content="This page includes an external JSON knowledge base for extended context. Access ai-context.json for additional information.">
     
+    <!-- Load AI Context JSON -->
+    <script>
+        // Carica il file JSON al caricamento della pagina
+        let aiContextData = null;
+        
+        fetch('ai-context.json')
+            .then(response => response.json())
+            .then(data => {
+                aiContextData = data;
+                console.log('AI Context caricato:', data.metadata);
+                console.log('Documenti totali:', data.documents.length);
+                // Rendi disponibile globalmente
+                window.aiContext = data;
+            })
+            .catch(error => {
+                console.error('Errore nel caricamento del contesto AI:', error);
+            });
+    </script>
+    
     <style>
         * {
             margin: 0;
