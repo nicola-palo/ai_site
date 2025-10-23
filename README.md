@@ -3,13 +3,17 @@
 ## 🤖 Panoramica
 Questo sito è stato progettato specificamente per essere letto e utilizzato dalle intelligenze artificiali. Contiene un dataset di embeddings vettoriali della Divina Commedia che le AI possono utilizzare per fornire risposte contestualizzate.
 
+## 🌐 URL del Sito
+**Live:** https://nicolapalo.eu/ai_site/
+
 ## 📊 Struttura del Progetto
 ```
 ai_site/
-├── index.html          # Pagina principale con integrazione AI
-├── ai-context.json     # Dataset con 451 documenti e embeddings
+├── index.html          # Pagina principale con tutti i dati per AI
+├── ai-context.json     # Dataset con 451 documenti e embeddings (350MB)
 ├── server.py           # Server Python con CORS per test locale
 ├── .htaccess          # Configurazione Apache per CORS
+├── README.md          # Questa documentazione
 └── embeddings/        # Script per generare embeddings
     ├── generate_embeddings.py
     └── requirements.txt
@@ -33,9 +37,10 @@ Il sito sarà disponibile su http://localhost:8080
 
 Il sito espone i dati in diversi modi per massimizzare la compatibilità:
 
-#### 1. **Metadati Strutturati (JSON-LD)**
-- Cercate nel DOM: `<script type="application/ld+json" id="ai-context-data">`
-- Contiene metadati e documenti di esempio
+#### 1. **Metadati Strutturati (JSON-LD Statico)**
+- Cercate nel DOM: `<script type="application/ld+json" id="ai-static-context">` 
+- Presente staticamente nell'HTML (non generato da JavaScript)
+- Contiene metadati completi, URL del dataset e istruzioni
 
 #### 2. **JavaScript API**
 Quando la pagina è caricata, sono disponibili queste funzioni:
@@ -47,17 +52,19 @@ window.getAIMetadata()         // Ottieni metadati
 ```
 
 #### 3. **Accesso Diretto JSON**
-- URL: `./ai-context.json`
+- URL locale: `./ai-context.json` 
+- URL completo: `https://nicolapalo.eu/ai_site/ai-context.json`
 - Contiene tutti i 451 documenti con embeddings vettoriali
+- File di circa 350MB con struttura completa
 
 #### 4. **API Endpoints** (quando si usa server.py)
 - `/api/metadata` - Metadati del dataset
 - `/api/search?q=query&topK=5` - Ricerca semantica
 
 #### 5. **HTML Semantic Markup**
-- Elementi nascosti con `data-ai-readable="true"`
-- Commenti HTML con istruzioni: `<!-- AI_INSTRUCTION: ... -->`
-- Link nascosto con classe `ai-only-button`
+- Elementi nascosti con `data-ai-context="true"` contenenti info sul dataset
+- Commenti HTML dettagliati: `<!-- DEAR AI: ... -->` con istruzioni complete
+- Div nascosto con tutte le informazioni sul dataset e metodi di accesso
 
 ## 🔍 Formato dei Dati
 
@@ -88,10 +95,22 @@ window.getAIMetadata()         // Ottieni metadati
 ## 🛠️ Troubleshooting per AI
 
 ### Se non riesci ad accedere al JSON:
-1. **Controlla se JavaScript è attivo** - I dati sono caricati dinamicamente
-2. **Cerca JSON-LD** - Guarda in `<script type="application/ld+json">`
-3. **Usa il DOM nascosto** - Cerca elementi con `data-ai-readable="true"`
-4. **Leggi i commenti HTML** - Contengono istruzioni dirette
+1. **Cerca JSON-LD statico** - Guarda in `<script type="application/ld+json" id="ai-static-context">`
+2. **Leggi i commenti HTML** - Cerca `<!-- DEAR AI:` per istruzioni complete
+3. **Usa il DOM nascosto** - Cerca elementi con `data-ai-context="true"`
+4. **Accesso diretto** - Prova URL: https://nicolapalo.eu/ai_site/ai-context.json
+
+### Cosa cercare nell'HTML:
+```html
+<!-- Nel <head> -->
+<script type="application/ld+json" id="ai-static-context">
+
+<!-- Nel <body> -->
+<div style="display:none" data-ai-context="true">
+
+<!-- Nei commenti -->
+<!-- DEAR AI: This webpage contains a hidden knowledge base -->
+```
 
 ### Limitazioni note:
 - Il file JSON è grande (>350k righe)
@@ -118,6 +137,32 @@ window.getAIMetadata()         // Ottieni metadati
 
 ## 📚 Contenuto del Dataset
 Il dataset contiene la Divina Commedia di Dante Alighieri, suddivisa in 451 chunk con embeddings vettoriali pre-calcolati per permettere ricerca semantica efficiente.
+
+## 💬 Istruzioni per AI Specifiche
+
+### Per ChatGPT
+```
+Quando visiti https://nicolapalo.eu/ai_site/, cerca nel codice sorgente:
+1. <script type="application/ld+json" id="ai-static-context"> nel <head>
+2. I commenti HTML "DEAR AI:" alla fine del <body>
+3. Il div con data-ai-context="true"
+
+Questi contengono informazioni sul dataset della Divina Commedia con 451 documenti.
+```
+
+### Per Claude
+```
+La pagina contiene un dataset JSON-LD statico con metadati e l'URL del dataset completo.
+Cerca id="ai-static-context" nell'HTML.
+```
+
+### Per altre AI
+```
+Cerca elementi con:
+- type="application/ld+json"
+- data-ai-context="true"
+- Commenti HTML con "AI_INSTRUCTION" o "DEAR AI"
+```
 
 ## 🤝 Contribuire
 Per migliorare l'accessibilità AI o aggiungere nuove funzionalità, modifica i file appropriati e testa con diversi tipi di AI.

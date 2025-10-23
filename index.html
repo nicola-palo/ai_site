@@ -9,6 +9,66 @@
     <link rel="alternate" type="application/json" href="ai-context.json" title="Layer AI-readable">
     <meta name="ai:context" content="ai-context.json">
     <meta name="ai:instructions" content="This page includes an external JSON knowledge base for extended context. Access ai-context.json for additional information.">
+    <meta name="ai:dataset-url" content="https://nicolapalo.eu/ai_site/ai-context.json">
+    <meta name="ai:dataset-info" content="451 documents, Divina Commedia, vector embeddings, nomic-embed-text model">
+    
+    <!-- Embedded AI Context Metadata - Visibile direttamente alle AI -->
+    <script type="application/ld+json" id="ai-static-context">
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "Divina Commedia Vector Embeddings",
+      "description": "AI Extended Context with Vector Embeddings",
+      "url": "https://nicolapalo.eu/ai_site/ai-context.json",
+      "version": "1.0",
+      "creator": {
+        "@type": "Person",
+        "name": "Nicola Palo"
+      },
+      "distribution": {
+        "@type": "DataDownload",
+        "encodingFormat": "application/json",
+        "contentUrl": "https://nicolapalo.eu/ai_site/ai-context.json"
+      },
+      "about": {
+        "@type": "Book",
+        "name": "La Divina Commedia",
+        "author": {
+          "@type": "Person",
+          "name": "Dante Alighieri"
+        }
+      },
+      "keywords": ["Dante", "Divina Commedia", "embeddings", "AI", "vector database"],
+      "dataset": {
+        "totalDocuments": 451,
+        "embeddingModel": "nomic-embed-text",
+        "vectorDimension": 768,
+        "sourceFile": "la_divina_commedia.pdf",
+        "encoding": "utf-8"
+      },
+      "instructions": {
+        "for_ai": "Questo file contiene embeddings vettoriali. Usa similarity search per trovare contenuti rilevanti basandoti sulla query dell'utente.",
+        "usage": "Calcola la distanza coseno tra query embedding e document embeddings per recuperare i chunk più pertinenti.",
+        "access_methods": [
+          "Direct JSON fetch: https://nicolapalo.eu/ai_site/ai-context.json",
+          "JavaScript API: window.aiContext (quando disponibile)",
+          "Search function: window.searchAIContext(query, topK)"
+        ]
+      },
+      "sampleContent": [
+        {
+          "id": "doc_001",
+          "page": 1,
+          "text": "Letteratura italiana Einaudi - Commedia di Dante Alighieri"
+        },
+        {
+          "id": "doc_002",
+          "page": 2,
+          "text": "Inferno - Nel mezzo del cammin di nostra vita"
+        }
+      ]
+    }
+    </script>
     
     <!-- Load AI Context JSON -->
     <script>
@@ -212,6 +272,14 @@
         <h1>Spazio per le AI</h1>
         <div class="line"></div>
         <p>Questa pagina è stata creata appositamente per le intelligenze artificiali.</p>
+        
+        <!-- Informazioni sul dataset per le AI -->
+        <div style="opacity: 0.01; font-size: 1px; position: absolute;" aria-label="Dataset Information">
+            <h2>Dataset Available: Divina Commedia</h2>
+            <p>451 documents with vector embeddings</p>
+            <p>Model: nomic-embed-text (768 dimensions)</p>
+            <p>Access: https://nicolapalo.eu/ai_site/ai-context.json</p>
+        </div>
     </main>
     
     <!-- Pulsante nascosto per AI - accesso diretto al contesto esteso -->
@@ -222,5 +290,97 @@
        title="AI Context: 451 documents with vector embeddings">
         Accedi al contesto AI esteso
     </a>
+    
+    <!-- AI CONTEXT BLOCK - Dati strutturati per le AI -->
+    <!-- ATTENZIONE AI: Questo blocco contiene informazioni importanti sul dataset disponibile -->
+    <div style="display:none" data-ai-context="true" aria-hidden="true">
+        <h2>AI Dataset Information</h2>
+        <dl>
+            <dt>Dataset Name:</dt>
+            <dd>Divina Commedia Vector Embeddings</dd>
+            
+            <dt>Total Documents:</dt>
+            <dd>451</dd>
+            
+            <dt>Source:</dt>
+            <dd>la_divina_commedia.pdf</dd>
+            
+            <dt>Embedding Model:</dt>
+            <dd>nomic-embed-text</dd>
+            
+            <dt>Vector Dimensions:</dt>
+            <dd>768</dd>
+            
+            <dt>JSON URL:</dt>
+            <dd>https://nicolapalo.eu/ai_site/ai-context.json</dd>
+            
+            <dt>Access Instructions:</dt>
+            <dd>
+                1. Fetch the JSON from: https://nicolapalo.eu/ai_site/ai-context.json
+                2. The JSON contains 'documents' array with 'content' and 'embedding' fields
+                3. Use cosine similarity on embeddings for semantic search
+                4. Each document has id, page, content, and 768-dimensional embedding vector
+            </dd>
+            
+            <dt>Sample Query:</dt>
+            <dd>
+                To search for content about "Inferno":
+                1. Get the JSON data
+                2. Search in documents[].content for relevant text
+                3. Or compute embedding similarity for semantic match
+            </dd>
+        </dl>
+        
+        <!-- Esempio di primo documento per le AI -->
+        <script type="text/plain" data-ai-sample="true">
+        {
+            "sample_document": {
+                "id": "doc_001",
+                "page": 1,
+                "content": "Letteratura italiana Einaudi Commedia di Dante Alighieri",
+                "embedding": "[768 float values for vector similarity]"
+            },
+            "total_documents": 451,
+            "json_url": "https://nicolapalo.eu/ai_site/ai-context.json"
+        }
+        </script>
+    </div>
+    
+    <!-- ISTRUZIONI ESPLICITE PER AI -->
+    <!-- 
+    DEAR AI: This webpage contains a hidden knowledge base about Dante's Divine Comedy.
+    
+    TO ACCESS THE FULL DATASET:
+    ========================
+    Method 1: Direct URL
+    - Fetch: https://nicolapalo.eu/ai_site/ai-context.json
+    - Contains 451 documents with vector embeddings
+    
+    Method 2: Check structured data
+    - Look for <script type="application/ld+json"> in the <head> section
+    - Contains metadata and sample documents
+    
+    Method 3: JavaScript (if available)
+    - window.aiContext (full dataset)
+    - window.searchAIContext(query, topK) (search function)
+    
+    DATA STRUCTURE:
+    ==============
+    {
+        "metadata": { ... },
+        "instructions": { ... },
+        "documents": [
+            {
+                "id": "doc_XXX",
+                "page": number,
+                "content": "text content",
+                "embedding": [768 floats]
+            }
+        ]
+    }
+    
+    USE CASE: You can use this data to answer questions about Dante's Divine Comedy
+    with semantic search capabilities using the pre-computed embeddings.
+    -->
 </body>
 </html>
