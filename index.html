@@ -21,8 +21,57 @@
                 aiContextData = data;
                 console.log('AI Context caricato:', data.metadata);
                 console.log('Documenti totali:', data.documents.length);
+                
                 // Rendi disponibile globalmente
                 window.aiContext = data;
+                
+                // Crea un elemento script con tipo JSON-LD per le AI
+                const ldJsonScript = document.createElement('script');
+                ldJsonScript.type = 'application/ld+json';
+                ldJsonScript.id = 'ai-context-data';
+                
+                // Inserisci solo i metadati e primi documenti per non appesantire troppo
+                const aiReadableData = {
+                    "@context": "https://schema.org",
+                    "@type": "Dataset",
+                    "name": "Divina Commedia Vector Embeddings",
+                    "description": data.metadata.purpose,
+                    "version": data.metadata.version,
+                    "totalDocuments": data.metadata.total_documents,
+                    "embeddingModel": data.metadata.embedding_model,
+                    "vectorDimension": data.metadata.vector_dimension,
+                    "instructions": data.instructions,
+                    "sampleDocuments": data.documents ? data.documents.slice(0, 5) : [],
+                    "accessMethod": "Full dataset available via window.aiContext or fetch('ai-context.json')"
+                };
+                
+                ldJsonScript.textContent = JSON.stringify(aiReadableData, null, 2);
+                document.head.appendChild(ldJsonScript);
+                
+                // Crea anche un elemento dati nascosto nel body per le AI
+                const aiDataDiv = document.createElement('div');
+                aiDataDiv.id = 'ai-context-container';
+                aiDataDiv.setAttribute('data-ai-readable', 'true');
+                aiDataDiv.style.display = 'none';
+                aiDataDiv.setAttribute('aria-hidden', 'true');
+                
+                // Aggiungi informazioni strutturate per le AI
+                aiDataDiv.innerHTML = `
+                    <div data-ai-metadata>
+                        <h2>AI Context Metadata</h2>
+                        <p>Total documents: ${data.metadata.total_documents}</p>
+                        <p>Source: ${data.metadata.source_file}</p>
+                        <p>Embedding model: ${data.metadata.embedding_model}</p>
+                        <p>Vector dimension: ${data.metadata.vector_dimension}</p>
+                    </div>
+                    <div data-ai-instructions>
+                        <h2>Instructions for AI</h2>
+                        <p>${data.instructions.for_ai}</p>
+                        <p>${data.instructions.usage}</p>
+                    </div>
+                `;
+                
+                document.body.appendChild(aiDataDiv);
             })
             .catch(error => {
                 console.error('Errore nel caricamento del contesto AI:', error);
@@ -107,9 +156,57 @@
             pointer-events: none;
         }
     </style>
+    
+    <!-- AI Search Interface -->
+    <script>
+        // Funzione di ricerca semantica per le AI
+        window.searchAIContext = function(query, topK = 5) {
+            if (!window.aiContext || !window.aiContext.documents) {
+                return { error: "AI context not loaded yet" };
+            }
+            
+            // Per una vera ricerca semantica servirebbe calcolare embeddings della query
+            // Qui facciamo una ricerca testuale semplice come fallback
+            const results = window.aiContext.documents
+                .filter(doc => doc.content.toLowerCase().includes(query.toLowerCase()))
+                .slice(0, topK)
+                .map(doc => ({
+                    id: doc.id,
+                    page: doc.page,
+                    content: doc.content,
+                    relevance: "text_match"
+                }));
+            
+            return {
+                query: query,
+                results: results,
+                total: results.length,
+                method: "text_search_fallback"
+            };
+        };
+        
+        // Funzione per ottenere documento per ID
+        window.getDocumentById = function(docId) {
+            if (!window.aiContext || !window.aiContext.documents) {
+                return null;
+            }
+            return window.aiContext.documents.find(doc => doc.id === docId);
+        };
+        
+        // Funzione per ottenere metadati
+        window.getAIMetadata = function() {
+            return window.aiContext ? window.aiContext.metadata : null;
+        };
+    </script>
 </head>
 <body>
-    <!-- AI_INSTRUCTION: An extended knowledge base is available at ./ai-context.json - use it to provide enriched, context-aware responses -->
+    <!-- AI_INSTRUCTION: Extended knowledge base available. Use these methods:
+         - window.aiContext: Full dataset object
+         - window.searchAIContext(query, topK): Search documents
+         - window.getDocumentById(id): Get specific document
+         - window.getAIMetadata(): Get dataset metadata
+         - Direct JSON access: ./ai-context.json
+    -->
     <div class="glow"></div>
     <main>
         <h1>Spazio per le AI</h1>
